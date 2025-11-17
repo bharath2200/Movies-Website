@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
+    <title>Movie Details - Peppam.tv</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+    
+    <link rel="stylesheet" href="style.css">
+</head>
+<body class="movie-detail-page">
+
+    <header class="detail-header">
+        <nav class="detail-nav">
+            <button class="menu-icon" id="menu-toggle" aria-label="Menu">☰</button>
+            <a href="index.html" class="logo">
+                <h1><span class="peppam">Peppam</span><span class="tv">.tv</span></h1>
+            </a>
+            <a href="index.html?search=true" class="search-icon" aria-label="Search">🔍</a>
+        </nav>
+    </header>
+
+    <!-- Sidebar -->
+    <div class="sidebar" id="sidebar">
+        <div class="sidebar-overlay" id="sidebar-overlay"></div>
+        <div class="sidebar-content">
+            <button class="sidebar-close" id="sidebar-close">×</button>
+            <ul class="sidebar-menu">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="about.html">About</a></li>
+                <li><a href="contact.html">Contact</a></li>
+            </ul>
+        </div>
+    </div>
+
+    <main class="movie-detail-main">
+        <div class="movie-detail-wrapper">
+            <div class="movie-poster-section">
+                <div class="movie-poster">
+                    <img id="movie-poster" src="" alt="Movie Poster">
+                </div>
+            </div>
+
+            <h1 class="detail-movie-title" id="movie-title">Loading...</h1>
+
+            <div class="movie-info-section">
+                <div class="movie-meta">
+                    <div class="meta-item">
+                        <span class="meta-label">Year:</span>
+                        <span class="meta-value" id="movie-year">-</span>
+                    </div>
+                    <div class="meta-item">
+                        <span class="meta-label">Genre:</span>
+                        <span class="meta-value" id="movie-genre">-</span>
+                    </div>
+                    <div class="meta-item">
+                        <span class="meta-label">👤 Cast:</span>
+                        <span class="meta-value" id="movie-cast">-</span>
+                    </div>
+                    <div class="meta-item">
+                        <span class="meta-label">👤 Director:</span>
+                        <span class="meta-value" id="movie-director">-</span>
+                    </div>
+                </div>
+
+                <button class="watch-button">
+                    <span class="play-icon">▶</span>
+                    <span>PEPPAM</span>
+                </button>
+            </div>
+        </div>
+
+        <div class="synopsis-section">
+            <h2 class="synopsis-title">Synopsis</h2>
+            <p class="synopsis-text" id="movie-synopsis">
+                Loading movie information...
+            </p>
+        </div>
+
+        <div class="streaming-info">
+            <p id="movie-streaming-info">
+                Loading streaming information...
+            </p>
+        </div>
+    </main>
+
+    <script src="script.js"></script>
+    <script>
+        // Movie database
+        const movies = {
+            'telusu-kada': {
+                title: 'Telusu Kada',
+                year: '2024',
+                genre: 'Action / Thriller',
+                cast: 'Naveen Polishetty, Anjali, Priyadarshi',
+                director: 'Vivek Athreya',
+                poster: 'https://upload.wikimedia.org/wikipedia/en/a/ae/Telusu_Kada.jpg',
+                synopsis: 'Telusu Kada is an action-packed thriller that follows the journey of a young man who gets entangled in a web of crime and mystery. As he uncovers dark secrets, he must fight against powerful forces to protect his loved ones and seek justice.',
+                streamingInfo: 'Telusu Kada movie in Telugu streaming in HD Quality. Latest 2024 Telugu movies watching online and download free. Director Vivek Athreya movie starring Naveen Polishetty, Anjali, Priyadarshi.'
+            },
+            'kaantha': {
+                title: 'Kaantha',
+                year: '2024',
+                genre: 'Drama / Romance',
+                cast: 'Sai Pallavi, Naga Chaitanya, Priyamani',
+                director: 'Sekhar Kammula',
+                poster: 'https://upload.wikimedia.org/wikipedia/en/9/91/Kaantha.jpg',
+                synopsis: 'Kaantha is a heartwarming drama that explores the complexities of relationships and love. The story follows two individuals from different backgrounds who find themselves drawn together, navigating through life\'s challenges and discovering the true meaning of connection.',
+                streamingInfo: 'Kaantha movie in Telugu streaming in HD Quality. Latest 2024 Telugu movies watching online and download free. Director Sekhar Kammula movie starring Sai Pallavi, Naga Chaitanya, Priyamani.'
+            },
+            'k-ramp': {
+                title: 'K-Ramp',
+                year: '2024',
+                genre: 'Action / Crime',
+                cast: 'Ravi Teja, Sreeleela, Jayaram',
+                director: 'Gopichand Malineni',
+                poster: 'https://upload.wikimedia.org/wikipedia/en/4/46/K-Ramp.jpg',
+                synopsis: 'K-Ramp is a high-octane action thriller that follows a fearless cop who takes on a dangerous criminal organization. With non-stop action sequences and gripping suspense, the film showcases the battle between good and evil in the criminal underworld.',
+                streamingInfo: 'K-Ramp movie in Telugu streaming in HD Quality. Latest 2024 Telugu movies watching online and download free. Director Gopichand Malineni movie starring Ravi Teja, Sreeleela, Jayaram.'
+            },
+            'dude': {
+                title: 'Dude',
+                year: '2024',
+                genre: 'Comedy / Drama',
+                cast: 'Vijay Deverakonda, Rashmika Mandanna, Rahul Ramakrishna',
+                director: 'Puri Jagannadh',
+                poster: 'https://imgs.search.brave.com/jnPIXuoYFRMPpiPCZvD6Uoo-jyvWAwQnpWyvTUB91rA/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly9pbWdz/LnNlYXJjaC5icmF2/ZS5jb20vd2dsR3FW/NWZDVGZ6emNVZHZp/WHFCZzFqc25ZZEtQ/OVJiS2ZRclFlR3Jn/dy9yczpmaXQ6NTAw/OjA6MDowL2c6Y2Uv/YUhSMGNITTZMeTl3/Y21WMi9hV1YzTG5K/bFpHUXVhWFF2L1pI/VmtaUzF5WlhacFpY/Y3QvYldWbllYUm9j/bVZoWkMxMi9NQzFr/T1hSeFlqRjBOSFpu/L2RtWXhMbXB3Wldj/X2QybGsvZEdnOU5q/UXdKbU55YjNBOS9j/MjFoY25RbVlYVjBi/ejEzL1pXSndKbk05/TWpWa05EVTAvTVRk/aE5UVXlNbUV5WVdV/Mi9NekZpTmpnNU1U/TXhaV1k1L01XRTNP/REUzTURNMk5R',
+                synopsis: 'Dude is a coming-of-age comedy-drama that follows the life of a carefree young man who learns valuable life lessons through his adventures and misadventures. The film blends humor with emotional moments, creating an entertaining and relatable story.',
+                streamingInfo: 'Dude movie in Telugu streaming in HD Quality. Latest 2024 Telugu movies watching online and download free. Director Puri Jagannadh movie starring Vijay Deverakonda, Rashmika Mandanna, Rahul Ramakrishna.'
+            },
+            'vikkatakavi': {
+                title: 'Vikkatakavi',
+                year: '2024',
+                genre: 'Drama / Biography',
+                cast: 'Nani, Keerthy Suresh, Prakash Raj',
+                director: 'Krishna Vamsi',
+                poster: 'https://imgs.search.brave.com/qpRqyYr8Y_T-8qE7_x6V6glhCobiJ4AtuOtjW4rwCQg/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly91cGxv/YWQud2lraW1lZGlh/Lm9yZy93aWtpcGVk/aWEvZW4vZi9mZC9W/aWtrYXRha2F2aS5q/cGVn',
+                synopsis: 'Vikkatakavi is an inspiring biographical drama that tells the story of a legendary poet and his journey through life. The film beautifully captures the essence of art, literature, and the struggles of an artist, making it a compelling watch for audiences.',
+                streamingInfo: 'Vikkatakavi movie in Telugu streaming in HD Quality. Latest 2024 Telugu movies watching online and download free. Director Krishna Vamsi movie starring Nani, Keerthy Suresh, Prakash Raj.'
+            },
+            'mithra-mandali': {
+                title: 'Mithra Mandali',
+                year: '2025',
+                genre: 'Action / Thriller',
+                cast: 'Allu Arjun, Pooja Hegde, Fahadh Faasil',
+                director: 'Trivikram Srinivas',
+                poster: 'https://imgs.search.brave.com/onNcOmctUaPvCN9dwT4Rp8MXEyCL2h-boLsGFfzSjiQ/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly9tZWRp/YS5yYWdhbGFoYXJp/LmNvbS9uZXdzL2p1/bjIwMjUvbWl0aHJh/LW1hbmRhbGktZmly/c3QtbG9vay1wb3N0/ZXItb3V0LWp1bjYu/anBn',
+                synopsis: 'Mithra Mandali is an action-packed thriller that follows a group of friends who get caught in a dangerous conspiracy. As they fight against powerful enemies, they must rely on their friendship and skills to survive and uncover the truth behind the mystery.',
+                streamingInfo: 'Mithra Mandali movie in Telugu streaming in HD Quality. Latest 2025 Telugu movies watching online and download free. Director Trivikram Srinivas movie starring Allu Arjun, Pooja Hegde, Fahadh Faasil.'
+            }
+        };
+
+        // Get movie ID from URL parameter
+        function getMovieIdFromURL() {
+            const urlParams = new URLSearchParams(window.location.search);
+            return urlParams.get('id') || 'telusu-kada'; // Default to first movie
+        }
+
+        // Load movie data
+        function loadMovieData() {
+            const movieId = getMovieIdFromURL();
+            const movie = movies[movieId];
+
+            if (!movie) {
+                // Movie not found, redirect to homepage
+                window.location.href = 'index.html';
+                return;
+            }
+
+            // Update page title
+            document.title = `${movie.title} - Peppam.tv`;
+
+            // Update movie details
+            document.getElementById('movie-title').textContent = movie.title;
+            document.getElementById('movie-year').textContent = movie.year;
+            document.getElementById('movie-genre').textContent = movie.genre;
+            document.getElementById('movie-cast').textContent = movie.cast;
+            document.getElementById('movie-director').textContent = movie.director;
+            document.getElementById('movie-poster').src = movie.poster;
+            document.getElementById('movie-poster').alt = `${movie.title} Movie Poster`;
+            document.getElementById('movie-synopsis').textContent = movie.synopsis;
+            document.getElementById('movie-streaming-info').textContent = movie.streamingInfo;
+        }
+
+        // Load movie data when page loads
+        window.addEventListener('DOMContentLoaded', loadMovieData);
+
+        // Sidebar functionality
+        const menuToggle = document.getElementById('menu-toggle');
+        const sidebar = document.getElementById('sidebar');
+        const sidebarClose = document.getElementById('sidebar-close');
+        const sidebarOverlay = document.getElementById('sidebar-overlay');
+
+        menuToggle.addEventListener('click', () => {
+            sidebar.classList.add('active');
+        });
+
+        sidebarClose.addEventListener('click', () => {
+            sidebar.classList.remove('active');
+        });
+
+        sidebarOverlay.addEventListener('click', () => {
+            sidebar.classList.remove('active');
+        });
+    </script>
+</body>
+</html>

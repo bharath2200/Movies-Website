@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
+    <title>Contact - Peppam.tv</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+    
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header>
+        <nav>
+            <div class="logo">
+                <h1><span class="peppam">Peppam</span><span class="tv">.tv</span></h1>
+            </div>
+            <div class="nav-links">
+                <ul>
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="about.html">About</a></li>
+                    <li><a href="contact.html" class="active">Contact</a></li>
+                </ul>
+                <form class="search-bar" id="search-form">
+                    <input type="search" id="search-input" placeholder="Search for movies...">
+                    <button type="submit">Search</button>
+                </form>
+            </div>
+        </nav>
+    </header>
+
+    <main style="padding: 3rem 2.5rem; max-width: 700px; margin: 0 auto;">
+        <section class="contact-section">
+            <h1 style="font-size: 2.5rem; color: #ffff00; margin-bottom: 2rem; text-align: center;">Contact Us</h1>
+            
+            <div style="color: #ffffff; line-height: 1.8; font-weight: 400;">
+                <p style="font-size: 1.1rem; margin-bottom: 2rem; text-align: center;">
+                    Have a question, suggestion, or feedback? We'd love to hear from you!
+                </p>
+
+                <form style="background-color: #1a1a1a; padding: 2rem; border-radius: 8px; margin-bottom: 2rem;">
+                    <div style="margin-bottom: 1.5rem;">
+                        <label for="name" style="display: block; margin-bottom: 0.5rem; color: #ffff00; font-weight: 600;">Name</label>
+                        <input type="text" id="name" name="name" required 
+                               style="width: 100%; padding: 0.75rem; border: 1px solid #555; border-radius: 5px; background-color: #333; color: #ffffff; font-family: 'Poppins', sans-serif; font-size: 1rem;">
+                    </div>
+
+                    <div style="margin-bottom: 1.5rem;">
+                        <label for="email" style="display: block; margin-bottom: 0.5rem; color: #ffff00; font-weight: 600;">Email</label>
+                        <input type="email" id="email" name="email" required 
+                               style="width: 100%; padding: 0.75rem; border: 1px solid #555; border-radius: 5px; background-color: #333; color: #ffffff; font-family: 'Poppins', sans-serif; font-size: 1rem;">
+                    </div>
+
+                    <div style="margin-bottom: 1.5rem;">
+                        <label for="message" style="display: block; margin-bottom: 0.5rem; color: #ffff00; font-weight: 600;">Message</label>
+                        <textarea id="message" name="message" rows="6" required 
+                                  style="width: 100%; padding: 0.75rem; border: 1px solid #555; border-radius: 5px; background-color: #333; color: #ffffff; font-family: 'Poppins', sans-serif; font-size: 1rem; resize: vertical;"></textarea>
+                    </div>
+
+                    <button type="submit" 
+                            style="width: 100%; padding: 0.75rem 1.5rem; background-color: #ffff00; color: #000000; border: none; border-radius: 5px; font-size: 1rem; font-weight: 700; font-family: 'Poppins', sans-serif; cursor: pointer; transition: background-color 0.3s ease;">
+                        Send Message
+                    </button>
+                </form>
+
+                <div style="text-align: center; padding: 2rem; background-color: #1a1a1a; border-radius: 8px;">
+                    <h2 style="font-size: 1.5rem; color: #ffff00; margin-bottom: 1rem;">Get in Touch</h2>
+                    <p style="font-size: 1rem; color: #cccccc; margin-bottom: 0.5rem;">
+                        <strong>Email:</strong> contact@peppam.tv
+                    </p>
+                    <p style="font-size: 1rem; color: #cccccc;">
+                        <strong>Developed by:</strong> Peppam Batch
+                    </p>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <p>&copy; 2025 Peppam.tv. All rights reserved.</p>
+    </footer>
+
+    <script src="script.js"></script>
+    <script>
+        // Contact form submission
+        document.querySelector('form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            alert('Thank you for your message! We will get back to you soon.');
+            this.reset();
+        });
+    </script>
+</body>
+</html>
+
