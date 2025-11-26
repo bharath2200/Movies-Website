@@ -7,9 +7,106 @@
     
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
     
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdn.plyr.io/3.7.8/plyr.css" />
+    
+    <link rel="stylesheet" href="style.css"> 
+
+    <style>
+        /* Apply Poppins to all relevant elements on the page */
+        body, .movie-detail-main, .vlc-button {
+            font-family: 'Poppins', sans-serif;
+        }
+
+        /* The 16:9 Container */
+        .player-container {
+            width: 100%;
+            aspect-ratio: 16 / 9;
+            background: #000;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.5);
+            margin-top: 20px; /* Spacing from details */
+        }
+
+        /* --- THEME CUSTOMIZATION --- */
+        :root {
+            --main-yellow: #ffff00; /* Neon Yellow */
+        }
+
+        .plyr {
+            font-family: 'Poppins', sans-serif;
+            --plyr-color-main: var(--main-yellow);
+            --plyr-video-control-color: #ffffff; 
+            --plyr-video-control-color-hover: var(--main-yellow);
+            --plyr-menu-background: #111;
+            --plyr-menu-color: #fff;
+        }
+
+        /* Big Play Button (Center) */
+        .plyr__control--overlaid {
+            background: var(--main-yellow); 
+            color: #000; 
+        }
+        .plyr__control--overlaid:hover {
+            background: #e6e600;
+        }
+
+        /* Timeline Scrubber Handle */
+        .plyr__range--seek::-webkit-slider-thumb {
+            background: var(--main-yellow) !important;
+            box-shadow: 0 0 8px rgba(255, 255, 0, 0.6) !important;
+        }
+
+        /* Tooltips */
+        .plyr__tooltip {
+            background: var(--main-yellow) !important;
+            color: #000 !important;
+            font-family: 'Poppins', sans-serif !important;
+            font-weight: 600;
+            border-radius: 4px;
+        }
+        
+        .plyr__time {
+            font-family: 'Poppins', sans-serif;
+            font-weight: 500;
+        }
+        
+        /* New VLC Button Style */
+        .vlc-button-container {
+            /* Increased margin for more space between player and button */
+            margin-top: 30px; 
+            text-align: center;
+        }
+
+        .vlc-button {
+            background-color: #ff8800; /* VLC-like orange */
+            color: #fff;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background-color 0.2s;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            box-shadow: 0 4px 10px rgba(255, 136, 0, 0.4);
+            text-decoration: none;
+        }
+
+        .vlc-button:hover {
+            background-color: #e67a00;
+        }
+
+        .vlc-button img {
+            width: 20px;
+            height: 20px;
+            filter: invert(1); /* Invert for better visibility on orange */
+        }
+    </style>
 </head>
 <body class="movie-detail-page">
 
@@ -43,9 +140,9 @@
                 </div>
             </div>
 
-            <h1 class="detail-movie-title" id="movie-title">Loading...</h1>
-
             <div class="movie-info-section">
+                <h1 class="detail-movie-title" id="movie-title">Loading...</h1>
+
                 <div class="movie-meta">
                     <div class="meta-item">
                         <span class="meta-label">Year:</span>
@@ -65,10 +162,17 @@
                     </div>
                 </div>
 
-                <button class="watch-button" id="watch-button">
-                    <span class="play-icon">▶</span>
-                    <span>PEPPAM</span>
-                </button>
+                <div class="player-container">
+                    <video id="player" playsinline crossorigin></video>
+                </div>
+                
+                <div class="vlc-button-container">
+                    <button class="vlc-button" id="vlc-player-button">
+                        <img src="https://i.postimg.cc/15TQ4y7B/vlc.png" alt="VLC Logo">
+                        WATCH IN VLC PLAYER
+                    </button>
+                </div>
+
             </div>
         </div>
 
@@ -87,8 +191,12 @@
     </main>
 
     <script src="script.js"></script>
+    <script src="https://cdn.plyr.io/3.7.8/plyr.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
+
     <script>
-        // Movie database
+        // Movie database (Updated with videoSource)
+        // Replace the dummy URLs with your actual m3u8 links
         const movies = {
             'telusu-kada': {
                 title: 'Telusu Kada',
@@ -97,9 +205,9 @@
                 cast: 'Naveen Polishetty, Anjali, Priyadarshi',
                 director: 'Vivek Athreya',
                 poster: 'https://upload.wikimedia.org/wikipedia/en/a/ae/Telusu_Kada.jpg',
-                synopsis: 'Telusu Kada is an action-packed thriller that follows the journey of a young man who gets entangled in a web of crime and mystery. As he uncovers dark secrets, he must fight against powerful forces to protect his loved ones and seek justice.',
-                streamingInfo: 'Telusu Kada movie in Telugu streaming in HD Quality. Latest 2024 Telugu movies watching online and download free. Director Vivek Athreya movie starring Naveen Polishetty, Anjali, Priyadarshi.',
-                streamingUrl: 'https://ww7.vcdnlare.com/v/DFErcdHoCqpaNB0?sid=7183&t=hls' // NEW
+                synopsis: 'Telusu Kada is an action-packed thriller that follows the journey of a young man who gets entangled in a web of crime and mystery.',
+                streamingInfo: 'Telusu Kada movie in Telugu streaming in HD Quality.',
+                videoSource: 'http://love.stranger-things.buzz/b8514b757bda9efbde57b335259d891c?token=1764173674147'
             },
             'kaantha': {
                 title: 'Kaantha',
@@ -108,9 +216,9 @@
                 cast: 'Sai Pallavi, Naga Chaitanya, Priyamani',
                 director: 'Sekhar Kammula',
                 poster: 'https://upload.wikimedia.org/wikipedia/en/9/91/Kaantha.jpg',
-                synopsis: 'Kaantha is a heartwarming drama that explores the complexities of relationships and love. The story follows two individuals from different backgrounds who find themselves drawn together, navigating through life\'s challenges and discovering the true meaning of connection.',
-                streamingInfo: 'Kaantha movie in Telugu streaming in HD Quality. Latest 2024 Telugu movies watching online and download free. Director Sekhar Kammula movie starring Sai Pallavi, Naga Chaitanya, Priyamani.',
-                streamingUrl: 'https://your-streaming-link.com/kaantha.m3u8' // NEW
+                synopsis: 'Kaantha is a heartwarming drama that explores the complexities of relationships and love.',
+                streamingInfo: 'Kaantha movie in Telugu streaming in HD Quality.',
+                videoSource: 'https://test-streams.mux.dev/x36xhzz/x36xhzz.m3u8'
             },
             'k-ramp': {
                 title: 'K-Ramp',
@@ -119,20 +227,20 @@
                 cast: 'Ravi Teja, Sreeleela, Jayaram',
                 director: 'Gopichand Malineni',
                 poster: 'https://upload.wikimedia.org/wikipedia/en/4/46/K-Ramp.jpg',
-                synopsis: 'K-Ramp is a high-octane action thriller that follows a fearless cop who takes on a dangerous criminal organization. With non-stop action sequences and gripping suspense, the film showcases the battle between good and evil in the criminal underworld.',
-                streamingInfo: 'K-Ramp movie in Telugu streaming in HD Quality. Latest 2024 Telugu movies watching online and download free. Director Gopichand Malineni movie starring Ravi Teja, Sreeleela, Jayaram.',
-                streamingUrl: 'https://your-streaming-link.com/k-ramp.m3u8' // NEW
+                synopsis: 'K-Ramp is a high-octane action thriller that follows a fearless cop who takes on a dangerous criminal organization.',
+                streamingInfo: 'K-Ramp movie in Telugu streaming in HD Quality.',
+                videoSource: 'https://test-streams.mux.dev/x36xhzz/x36xhzz.m3u8'
             },
             'dude': {
                 title: 'Dude',
                 year: '2024',
                 genre: 'Comedy / Drama',
-                cast: 'Vijay Deverakonda, Rashmika Mandanna, Rahul Ramakrishna',
+                cast: 'Vijay Deverakonda, Rashmika Mandanna',
                 director: 'Puri Jagannadh',
                 poster: 'https://imgs.search.brave.com/jnPIXuoYFRMPpiPCZvD6Uoo-jyvWAwQnpWyvTUB91rA/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly9pbWdz/LnNlYXJjaC5icmF2/ZS5jb20vd2dsR3FW/NWZDVGZ6emNVZHZp/WHFCZzFqc25ZZEtQ/OVJiS2ZRclFlR3Jn/dy9yczpmaXQ6NTAw/OjA6MDowL2c6Y2Uv/YUhSMGNITTZMeTl3/Y21WMi9hV1YzTG5K/bFpHUXVhWFF2L1pI/VmtaUzF5WlhacFpY/Y3QvYldWbllYUm9j/bVZoWkMxMi9NQzFr/T1hSeFlqRjBOSFpu/L2RtWXhMbXB3Wldj/X2QybGsvZEdnOU5q/UXdKbU55YjNBOS9j/MjFoY25RbVlYVjBi/ejEzL1pXSndKbk05/TWpWa05EVTAvTVRk/aE5UVXlNbUV5WVdV/Mi9NekZpTmpnNU1U/TXhaV1k1L01XRTNP/REUzTURNMk5R',
-                synopsis: 'Dude is a coming-of-age comedy-drama that follows the life of a carefree young man who learns valuable life lessons through his adventures and misadventures. The film blends humor with emotional moments, creating an entertaining and relatable story.',
-                streamingInfo: 'Dude movie in Telugu streaming in HD Quality. Latest 2024 Telugu movies watching online and download free. Director Puri Jagannadh movie starring Vijay Deverakonda, Rashmika Mandanna, Rahul Ramakrishna.',
-                streamingUrl: 'https://your-streaming-link.com/dude.m3u8' // NEW
+                synopsis: 'Dude is a coming-of-age comedy-drama that follows the life of a carefree young man.',
+                streamingInfo: 'Dude movie in Telugu streaming in HD Quality.',
+                videoSource: 'https://test-streams.mux.dev/x36xhzz/x36xhzz.m3u8'
             },
             'vikkatakavi': {
                 title: 'Vikkatakavi',
@@ -141,9 +249,9 @@
                 cast: 'Nani, Keerthy Suresh, Prakash Raj',
                 director: 'Krishna Vamsi',
                 poster: 'https://imgs.search.brave.com/qpRqyYr8Y_T-8qE7_x6V6glhCobiJ4AtuOtjW4rwCQg/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly91cGxv/YWQud2lraW1lZGlh/Lm9yZy93aWtpcGVk/aWEvZW4vZi9mZC9W/aWtrYXRha2F2aS5q/cGVn',
-                synopsis: 'Vikkatakavi is an inspiring biographical drama that tells the story of a legendary poet and his journey through life. The film beautifully captures the essence of art, literature, and the struggles of an artist, making it a compelling watch for audiences.',
-                streamingInfo: 'Vikkatakavi movie in Telugu streaming in HD Quality. Latest 2024 Telugu movies watching online and download free. Director Krishna Vamsi movie starring Nani, Keerthy Suresh, Prakash Raj.',
-                streamingUrl: 'https://your-streaming-link.com/vikkatakavi.m3u8' // NEW
+                synopsis: 'Vikkatakavi is an inspiring biographical drama that tells the story of a legendary poet.',
+                streamingInfo: 'Vikkatakavi movie in Telugu streaming in HD Quality.',
+                videoSource: 'https://test-streams.mux.dev/x36xhzz/x36xhzz.m3u8'
             },
             'mithra-mandali': {
                 title: 'Mithra Mandali',
@@ -152,16 +260,44 @@
                 cast: 'Allu Arjun, Pooja Hegde, Fahadh Faasil',
                 director: 'Trivikram Srinivas',
                 poster: 'https://imgs.search.brave.com/onNcOmctUaPvCN9dwT4Rp8MXEyCL2h-boLsGFfzSjiQ/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly9tZWRp/YS5yYWdhbGFoYXJp/LmNvbS9uZXdzL2p1/bjIwMjUvbWl0aHJh/LW1hbmRhbGktZmly/c3QtbG9vay1wb3N0/ZXItb3V0LWp1bjYu/anBn',
-                synopsis: 'Mithra Mandali is an action-packed thriller that follows a group of friends who get caught in a dangerous conspiracy. As they fight against powerful enemies, they must rely on their friendship and skills to survive and uncover the truth behind the mystery.',
-                streamingInfo: 'Mithra Mandali movie in Telugu streaming in HD Quality. Latest 2025 Telugu movies watching online and download free. Director Trivikram Srinivas movie starring Allu Arjun, Pooja Hegde, Fahadh Faasil.',
-                streamingUrl: 'https://your-streaming-link.com/mithra-mandali.m3u8' // NEW
+                synopsis: 'Mithra Mandali is an action-packed thriller that follows a group of friends.',
+                streamingInfo: 'Mithra Mandali movie in Telugu streaming in HD Quality.',
+                videoSource: 'https://test-streams.mux.dev/x36xhzz/x36xhzz.m3u8'
             }
         };
 
         // Get movie ID from URL parameter
         function getMovieIdFromURL() {
             const urlParams = new URLSearchParams(window.location.search);
-            return urlParams.get('id') || 'telusu-kada'; // Default to first movie
+            return urlParams.get('id') || 'telusu-kada'; 
+        }
+
+        // Function to Initialize Player
+        function loadPlayer(sourceUrl) {
+            const video = document.getElementById('player');
+            
+            const playerConfig = {
+                controls: [
+                    'play-large', 'play', 'progress', 'mute', 'volume', 'fullscreen'
+                ],
+                ratio: '16:9',
+                keyboard: { focused: true, global: true },
+                tooltips: { controls: true, seek: true }
+            };
+
+            // HLS (m3u8) support logic
+            if (Hls.isSupported() && sourceUrl.endsWith('.m3u8')) {
+                const hls = new Hls();
+                hls.loadSource(sourceUrl);
+                hls.attachMedia(video);
+                hls.on(Hls.Events.MANIFEST_PARSED, function() {
+                    window.player = new Plyr(video, playerConfig);
+                });
+            } else {
+                // For direct MP4 or other links, or if HLS isn't supported
+                video.src = sourceUrl;
+                window.player = new Plyr(video, playerConfig);
+            }
         }
 
         // Load movie data
@@ -170,15 +306,12 @@
             const movie = movies[movieId];
 
             if (!movie) {
-                // Movie not found, redirect to homepage
                 window.location.href = 'index.html';
                 return;
             }
 
-            // Update page title
+            // Update page content
             document.title = `${movie.title} - Peppam.tv`;
-
-            // Update movie details
             document.getElementById('movie-title').textContent = movie.title;
             document.getElementById('movie-year').textContent = movie.year;
             document.getElementById('movie-genre').textContent = movie.genre;
@@ -189,17 +322,44 @@
             document.getElementById('movie-synopsis').textContent = movie.synopsis;
             document.getElementById('movie-streaming-info').textContent = movie.streamingInfo;
 
-            // NEW: Add click listener to the watch button
-            document.getElementById('watch-button').addEventListener('click', function() {
-                // This will send the user to the URL you defined in the movie object
-                window.location.href = movie.streamingUrl;
-            });
+            // LOAD THE PLAYER FOR THIS SPECIFIC MOVIE
+            if(movie.videoSource) {
+                loadPlayer(movie.videoSource);
+                
+                // --- VLC BUTTON LOGIC (Direct Protocol Launch Attempt) ---
+                const vlcButton = document.getElementById('vlc-player-button');
+                const videoSourceUrl = movie.videoSource;
+                
+                vlcButton.onclick = function() {
+                    // Attempt to launch VLC using the custom URI scheme (vlc://)
+                    // Note: This often requires user confirmation or fails in modern browsers.
+                    const vlcProtocolUrl = `vlc://${videoSourceUrl}`;
+                    window.location.href = vlcProtocolUrl;
+                    
+                    // Optional: Inform the user of the attempt and provide a manual fallback
+                    setTimeout(() => {
+                        // Attempt to copy the URL to the clipboard if possible
+                        if (navigator.clipboard && navigator.clipboard.writeText) {
+                            navigator.clipboard.writeText(videoSourceUrl).then(() => {
+                                alert(`Attempting to launch VLC with stream: ${videoSourceUrl}\n\nThe URL has been copied to your clipboard. If VLC doesn't open automatically, please paste the link into VLC's "Open Network Stream" window.`);
+                            }).catch(() => {
+                                alert(`Attempting to launch VLC with stream: ${videoSourceUrl}\n\nIf it doesn't open, please manually copy the link above and paste it into VLC's "Open Network Stream" window.`);
+                            });
+                        } else {
+                            alert(`Attempting to launch VLC with stream: ${videoSourceUrl}\n\nIf it doesn't open, please manually copy the link above and paste it into VLC's "Open Network Stream" window.`);
+                        }
+                    }, 500); 
+                };
+                
+            } else {
+                console.log("No video source found for this movie.");
+            }
         }
 
         // Load movie data when page loads
         window.addEventListener('DOMContentLoaded', loadMovieData);
 
-        // Sidebar functionality
+        // Sidebar functionality (assuming 'script.js' defines the initial CSS state)
         const menuToggle = document.getElementById('menu-toggle');
         const sidebar = document.getElementById('sidebar');
         const sidebarClose = document.getElementById('sidebar-close');
@@ -208,11 +368,9 @@
         menuToggle.addEventListener('click', () => {
             sidebar.classList.add('active');
         });
-
         sidebarClose.addEventListener('click', () => {
             sidebar.classList.remove('active');
         });
-
         sidebarOverlay.addEventListener('click', () => {
             sidebar.classList.remove('active');
         });
